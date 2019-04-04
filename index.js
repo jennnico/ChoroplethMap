@@ -7,23 +7,40 @@ document.addEventListener('DOMContentLoaded',function(){
   req.onload=function(){
     //Education attainment data
     json=JSON.parse(req.responseText);
-   console.log(json[1])
+
    
-var svg = d3.select("svg");
+    var svg = d3.select("svg");
+    var path = d3.geoPath();
+    var ordered = []; //array to order topojson IDs
+    
 
-var path = d3.geoPath();
-
-d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
-  if (error) throw error;
-
- //Make the counties
+d3.json("https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/counties.json", function(error, us) {
+  if (error) throw error;  
+ 
+  //Make the counties
  svg.append("g")
     .attr("class", "counties")
     .selectAll("path")
     .data(topojson.feature(us, us.objects.counties).features)
     .enter().append("path")
-    .attr("d", path);
-
+    .attr("d", path)
+    .append("title")
+     //Compare geo-location data (d) to county data (json)
+    .text(d => {
+        for(var k = 0; k < json.length; k++) {
+          if (d.id === json[k].fips) {
+            return json[k].area_name + ", " + json[k].state + ": " + json[k].bachelorsOrHigher + "%";
+            
+            //attempt to add color
+            if(json[k].bachelorsOrHigher > 50){
+              svg.style("fill", "yellow")
+            }
+            //end attempt to add color
+          }
+        }
+        return;
+      })
+    
  //Make the county borders
  svg.append("path")
     .attr("class", "county-borders")
@@ -73,7 +90,5 @@ d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
            .attr("y", (d, i) => 30)
            .text(d=>d + "%")
   
-  
-});
-    
-      }})
+   });  
+}})
