@@ -30,12 +30,6 @@ d3.json("https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-f
         for(var k = 0; k < json.length; k++) {
           if (d.id === json[k].fips) {
             return json[k].area_name + ", " + json[k].state + ": " + json[k].bachelorsOrHigher + "%";
-            
-            //attempt to add color
-            if(json[k].bachelorsOrHigher > 50){
-              svg.style("fill", "yellow")
-            }
-            //end attempt to add color
           }
         }
         return;
