@@ -9,23 +9,40 @@ document.addEventListener('DOMContentLoaded',function(){
     json=JSON.parse(req.responseText);
 
    
-    var svg = d3.select("svg");
-    var path = d3.geoPath();
-    var ordered = []; //array to order topojson IDs
+  var svg = d3.select("svg");
+  var path = d3.geoPath();
+  var ordered = []; //array to order topojson IDs
     
 
 d3.json("https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/counties.json", function(error, us) {
   if (error) throw error;  
  
+   
   //Make the counties
+  //add fill color, tooltip here!
  svg.append("g")
     .attr("class", "counties")
+    .style("fill", "blue")
     .selectAll("path")
     .data(topojson.feature(us, us.objects.counties).features)
     .enter().append("path")
     .attr("d", path)
+    .style('fill', (d) => {
+        for(var l = 0; l < json.length; l++) {
+            if (d.id === json[l].fips) {
+              if (json[l].bachelorsOrHigher <= 25){ //2.8, navy
+                 return ("rgba(12, 81, 0, .3)")
+               }else if (json[l].bachelorsOrHigher <= 50){
+                 return("rgba(12, 81, 0, .5)")
+               }else if (json[l].bachelorsOrHigher <= 75){
+                 return("rgba(12, 81, 0, .7)")
+               }else{
+                 return("rgba(12, 81, 0, 1)")
+               }
+          }//end first if statement
+        }//end for loop
+     })//end style - fill
     .append("title")
-     //Compare geo-location data (d) to county data (json)
     .text(d => {
         for(var k = 0; k < json.length; k++) {
           if (d.id === json[k].fips) {
@@ -34,7 +51,10 @@ d3.json("https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-f
         }
         return;
       })
+  
+ 
     
+
  //Make the county borders
  svg.append("path")
     .attr("class", "county-borders")
@@ -84,5 +104,7 @@ d3.json("https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-f
            .attr("y", (d, i) => 30)
            .text(d=>d + "%")
   
-   });  
-}})
+  
+});
+    
+      }})
