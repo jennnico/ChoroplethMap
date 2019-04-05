@@ -4,9 +4,9 @@ body{
   background-color: lightgray;
 }
 
-.counties {
-  fill: #8aaa7b;
-}
+/* .counties {
+  fill: transparent;
+} */
 
 .counties :hover {
   fill: #026018;
