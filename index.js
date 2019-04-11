@@ -22,7 +22,6 @@ d3.json("https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-f
   //add fill color, tooltip here!
  svg.append("g")
     .attr("class", "counties")
-    .style("fill", "blue")
     .selectAll("path")
     .data(topojson.feature(us, us.objects.counties).features)
     .enter().append("path")
