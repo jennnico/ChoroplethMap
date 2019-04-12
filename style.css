@@ -8,7 +8,7 @@ body{
   fill: transparent;
 } */
 
-.counties :hover {
+.county :hover {
   fill: #026018;
 }
 
@@ -20,7 +20,6 @@ body{
   stroke-linecap: round;
   pointer-events: none;
 }
-
 
 .states{
   opacity: 0.1;
@@ -44,5 +43,6 @@ body{
   border-left: 8px solid black
 }
 
-
-
+.percentage{
+  font-size: 12px;
+}
